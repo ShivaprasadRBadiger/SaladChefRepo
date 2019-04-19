@@ -8,7 +8,7 @@ namespace SaladChef
 	[RequireComponent(typeof(Rigidbody2D))]
 	[RequireComponent(typeof(Animator))]
 	[RequireComponent(typeof(SpriteRenderer))]
-	public class PlayerMovement : MonoBehaviour
+	public class PlayerMovement : MonoBehaviour, IFixedTickable, ITickable, ILateTickable
 	{
 
 		Rigidbody2D rigidbody;
@@ -27,32 +27,41 @@ namespace SaladChef
 		[SerializeField]
 		float movementSpeed = 1;
 
-
+		GameManager gameManager;
 		private void Awake()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
 			animator = GetComponent<Animator>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
+			gameManager = GameManager.Instance;
 
+			gameManager.Subscribe(this);
+			gameManager.Subscribe(this);
 		}
 
-		private void Update()
+		private void OnDestroy()
+		{
+			gameManager.Unsubscribe(this);
+			gameManager.Unsubscribe(this);
+		}
+
+		public void Tick()
 		{
 			velocity = GetDirection(inputBindings);
 		}
 
-		private void FixedUpdate()
+		public void FixedTick()
 		{
 			velocity = velocity * Time.fixedDeltaTime * movementSpeed;
 			rigidbody.MovePosition(((Vector2)transform.position + velocity));
 		}
 
-		private void LateUpdate()
+		public void LateTick()
 		{
 			animator.SetFloat("VelocityX", velocity.x);
 			animator.SetFloat("VelocityY", velocity.y);
 			animator.SetFloat("Speed", velocity.sqrMagnitude);
-			if (velocity.sqrMagnitude > 0.3)
+			if (velocity.sqrMagnitude > 0.5)
 			{
 				spriteRenderer.flipX = velocity.x > 0 ? false : true;
 				animator.SetFloat("DirectionX", velocity.x);
@@ -87,6 +96,7 @@ namespace SaladChef
 				return result;
 			}
 		}
+
 	}
 }
 
