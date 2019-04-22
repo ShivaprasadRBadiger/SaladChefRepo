@@ -4,6 +4,6 @@ namespace SaladChef
 {
 	public interface ISalad : IItem
 	{
-		List<IVegitable> currentMix { get; set; }
+		List<IVegetable> currentMix { get; set; }
 	}
 }

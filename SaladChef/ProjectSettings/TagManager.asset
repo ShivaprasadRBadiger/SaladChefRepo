@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - P1
+  - P2
+  - Trash
+  - VegetableVender
   layers:
   - Default
   - TransparentFX
@@ -49,4 +53,10 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1724990797
+    locked: 0
+  - name: NPC
+    uniqueID: 1130792149
+    locked: 0
+  - name: HUD
+    uniqueID: 3833930831
     locked: 0

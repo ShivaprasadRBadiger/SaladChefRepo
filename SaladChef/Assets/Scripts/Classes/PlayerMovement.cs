@@ -8,36 +8,46 @@ namespace SaladChef
 	[RequireComponent(typeof(Rigidbody2D))]
 	[RequireComponent(typeof(Animator))]
 	[RequireComponent(typeof(SpriteRenderer))]
-	public class PlayerMovement : MonoBehaviour, IFixedTickable, ITickable, ILateTickable
+	[RequireComponent(typeof(IPlayerInputBindings))]
+	public class PlayerMovement : MonoBehaviour, IFixedTickable, ITickable, IPlayerMovement
 	{
+		private TickableManager gameManager;
+		private Rigidbody2D rigidbody;
+		private IPlayerInputBindings playerInputBindings;
+		private InputBindings playerInput;
+		private Vector2 velocity = Vector2.zero;
+		private Vector2 lastDirection = Vector2.zero;
+		private bool canControl = true;
 
-		Rigidbody2D rigidbody;
-		Animator animator;
-		SpriteRenderer spriteRenderer;
+		//TODO:Re-factor animations out of this class
+		private Animator animator;
+		private SpriteRenderer spriteRenderer;
 
 
-
+		[Header("Movement Speed Controls")]
 		[SerializeField]
-		InputBindings inputBindings;
-
-		Vector2 velocity = Vector2.zero;
-		Vector2 lastDirection = Vector2.zero;
-
-
+		private float movementSpeed = 1;
 		[SerializeField]
-		float movementSpeed = 1;
+		private float boostedMultiplier = 2;
 
-		GameManager gameManager;
 		private void Awake()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
+			gameManager = TickableManager.Instance;
+			playerInputBindings = GetComponent<IPlayerInputBindings>();
+			playerInput = playerInputBindings.GetInputBindings();
+			if (playerInput == null)
+			{
+				Debug.LogWarning("Input bindings now assigned!");
+			}
+			//TODO:Re-factor Animation out of this class
 			animator = GetComponent<Animator>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
-			gameManager = GameManager.Instance;
 
 			gameManager.Subscribe(this);
 			gameManager.Subscribe(this);
 		}
+
 
 		private void OnDestroy()
 		{
@@ -47,17 +57,12 @@ namespace SaladChef
 
 		public void Tick()
 		{
-			velocity = GetDirection(inputBindings);
-		}
-
-		public void FixedTick()
-		{
-			velocity = velocity * Time.fixedDeltaTime * movementSpeed;
-			rigidbody.MovePosition(((Vector2)transform.position + velocity));
-		}
-
-		public void LateTick()
-		{
+			if (playerInput != null)
+			{
+				velocity = GetDirection(playerInput);
+			}
+			//TODO: Should be taken out of this class
+			#region Animation
 			animator.SetFloat("VelocityX", velocity.x);
 			animator.SetFloat("VelocityY", velocity.y);
 			animator.SetFloat("Speed", velocity.sqrMagnitude);
@@ -67,10 +72,22 @@ namespace SaladChef
 				animator.SetFloat("DirectionX", velocity.x);
 				animator.SetFloat("DirectionY", velocity.y);
 			}
+			#endregion
 		}
+
+		public void FixedTick()
+		{
+			velocity = velocity * Time.fixedDeltaTime * movementSpeed;
+			rigidbody.MovePosition(((Vector2)transform.position + velocity));
+		}
+
 		private Vector2 GetDirection(InputBindings inputBindings, bool normalized = true)
 		{
 			Vector2 result = Vector2.zero;
+			if (!canControl)
+			{
+				return result;
+			}
 			if (Input.GetKey(inputBindings.Up))
 			{
 				result.y = 1;
@@ -97,6 +114,18 @@ namespace SaladChef
 			}
 		}
 
+		public void BoostSpeed()
+		{
+			movementSpeed = 2;
+		}
+		public void DisableControls()
+		{
+			canControl = false;
+		}
+		public void EnableControls()
+		{
+			canControl = true;
+		}
 	}
 }
 

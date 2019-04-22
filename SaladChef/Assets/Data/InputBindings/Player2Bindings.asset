@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dfd28472434a64dab233c889011d6f, type: 3}
   m_Name: Player2Bindings
   m_EditorClassIdentifier: 
-  Up: 0
-  Down: 0
-  Left: 0
-  Right: 0
-  Action1: 0
-  Action2: 0
+  Up: 119
+  Down: 97
+  Left: 115
+  Right: 100
+  Action1: 101
+  Action2: 102
