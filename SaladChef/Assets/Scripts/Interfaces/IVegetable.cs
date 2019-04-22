@@ -6,6 +6,6 @@ namespace SaladChef
 {
 	public interface IVegetable : IItem, IProcessable, ICloneable
 	{
-		Dictionary<int, Sprite> stateSpriteDictionary { get; }
+		Dictionary<ProcessingState, Sprite> stateSpriteDictionary { get; }
 	}
 }

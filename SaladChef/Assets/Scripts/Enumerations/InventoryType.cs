@@ -6,7 +6,7 @@ namespace SaladChef
 	public enum InventoryType
 	{
 		Default,
-		PlayerInventory,
+		QueueInventory,
 	}
 }
 

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace SaladChef
 {
-	public class PlayerInventory : IPlayerInventory
+	public class QueueInventory : IQueuInventory
 	{
 		public int capacity { get; }
 		public Queue<IItem> currentItems { get; }
 
-		public PlayerInventory(int capacity)
+		public QueueInventory(int capacity)
 		{
 			this.capacity = capacity;
 			currentItems = new Queue<IItem>(capacity);
@@ -33,25 +33,31 @@ namespace SaladChef
 			return true;
 		}
 
-		public int GetCurrentCapacity()
+		public int Count()
 		{
 			return currentItems.Count;
 		}
 
 		public IItem GetItem()
 		{
-			return currentItems.Peek();
+			if (currentItems.Count > 0)
+			{
+				return currentItems.Peek();
+			}
+			return null;
 		}
 
-		public bool RemoveItem()
+		public int RemoveItem()
 		{
 			if (currentItems.Count > 0)
 			{
-				return currentItems.Dequeue() != null;
+				int index = currentItems.Count - 1;
+				currentItems.Dequeue();
+				return index;
 			}
 			else
 			{
-				return false;
+				return -1;
 			}
 		}
 	}

@@ -31,7 +31,7 @@ namespace SaladChef
 		{
 			for (int i = 0; i < spriteRenderers.Length; i++)
 			{
-				spriteRenderers[i].sprite = vegitable.stateSpriteDictionary[(int)ProcessingState.RAW];
+				spriteRenderers[i].sprite = vegitable.stateSpriteDictionary[ProcessingState.RAW];
 			}
 		}
 

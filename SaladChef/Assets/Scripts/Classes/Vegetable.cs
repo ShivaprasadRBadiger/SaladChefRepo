@@ -12,9 +12,9 @@ namespace SaladChef
 
 		public float processingTime { get; }
 
-		public Dictionary<int, Sprite> stateSpriteDictionary { get; }
+		public Dictionary<ProcessingState, Sprite> stateSpriteDictionary { get; }
 
-		public Vegetable(int id, string name, float processingTime, Dictionary<int, Sprite> stateSpriteDictionary)
+		public Vegetable(int id, string name, float processingTime, Dictionary<ProcessingState, Sprite> stateSpriteDictionary)
 		{
 			this.id = id;
 			this.name = name;

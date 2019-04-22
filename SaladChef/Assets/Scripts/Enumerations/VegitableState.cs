@@ -3,6 +3,7 @@
 namespace SaladChef
 {
 	[Flags]
+	[Serializable]
 	public enum ProcessingState
 	{
 		RAW = 0,

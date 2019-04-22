@@ -81,6 +81,11 @@ namespace SaladChef
 		/// <returns>True if requested amount and kind are available.</returns>
 		public bool HasItems(IItem item, int amount)
 		{
+			if (item == null)
+			{
+				return dictionary.Count > 0;
+			}
+
 			if (dictionary.ContainsKey(item))
 			{
 				return dictionary[item] >= amount;
@@ -91,15 +96,15 @@ namespace SaladChef
 			}
 		}
 
-		public int GetCurrentCapacity()
+		public bool HasCapacityReached()
 		{
 			if (dictionary != null)
 			{
-				return dictionary.Count;
+				return dictionary.Count < capacity;
 			}
 			else
 			{
-				return 0;
+				return false;
 			}
 		}
 

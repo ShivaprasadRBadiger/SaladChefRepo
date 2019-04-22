@@ -24,7 +24,7 @@ namespace SaladChef
 	[Serializable]
 	public class VegitableView
 	{
-		public int processingState;
+		public ProcessingState processingState;
 		public Sprite sprite;
 	}
 

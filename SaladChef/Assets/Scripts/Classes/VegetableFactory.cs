@@ -34,7 +34,7 @@ namespace SaladChef
 
 			for (int i = 0; i < vegetableCatalog.Count; i++)
 			{
-				Dictionary<int, Sprite> stateSpriteDictionary = new Dictionary<int, Sprite>();
+				Dictionary<ProcessingState, Sprite> stateSpriteDictionary = new Dictionary<ProcessingState, Sprite>();
 				for (int j = 0; j < vegetableCatalog[i].vegitableViews.Length; j++)
 				{
 					stateSpriteDictionary.Add(vegetableCatalog[i].vegitableViews[j].processingState, vegetableCatalog[i].vegitableViews[j].sprite);

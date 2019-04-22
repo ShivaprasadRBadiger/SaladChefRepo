@@ -21,7 +21,7 @@ namespace SaladChef
 		{
 			switch (type)
 			{
-				case InventoryType.PlayerInventory: return new PlayerInventory(capacity);
+				case InventoryType.QueueInventory: return new QueueInventory(capacity);
 				case InventoryType.Default: return new DefaultInventory(capacity);
 				default: return new DefaultInventory(capacity);
 			}

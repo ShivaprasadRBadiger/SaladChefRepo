@@ -48,13 +48,6 @@ namespace SaladChef
 			gameManager.Subscribe(this);
 		}
 
-
-		private void OnDestroy()
-		{
-			gameManager.Unsubscribe(this);
-			gameManager.Unsubscribe(this);
-		}
-
 		public void Tick()
 		{
 			if (playerInput != null)
