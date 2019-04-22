@@ -32,7 +32,7 @@ namespace SaladChef
 			IVegetable vegetable = (IVegetable)item;
 			if (vegetable != null)
 			{
-				this.vegetableSpriteRenderer.sprite = vegetable.stateSpriteDictionary[vegetable.currentState];
+				this.vegetableSpriteRenderer.sprite = vegetable.stateSpriteDictionary[ProcessingState.RAW];
 				this.vegetableSpriteRenderer.enabled = true;
 			}
 			else

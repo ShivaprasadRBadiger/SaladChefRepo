@@ -13,6 +13,7 @@ namespace SaladChef
 			}
 			return _instance;
 		}
+		private SaladFactory() { }
 
 		public override ISalad GetSalad()
 		{

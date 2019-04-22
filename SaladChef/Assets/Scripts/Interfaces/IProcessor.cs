@@ -2,6 +2,9 @@
 
 namespace SaladChef
 {
+	/// <summary>
+	/// Can be extended to Ovens, Blenders ,Grinders,Refrigerator etc...
+	/// </summary>
 	public interface IProcessor
 	{
 		/// <summary>

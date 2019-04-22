@@ -12,13 +12,29 @@ namespace SaladChef
 		PlayerData playerData;
 		private IPlayerHUD playerHUD;
 		private InputBindings inputBindings;
+		/// <summary>
+		/// Player's carry capacity and management.
+		/// </summary>
 		private IQueuInventory playerInventory;
+		/// <summary>
+		/// Current vegetable pile player is in range to use.
+		/// </summary>
 		private IVegetableVender currentVender;
+		/// <summary>
+		/// Any processor the player is in range to use.
+		/// </summary>
 		private IProcessor currentProcessor;
+		/// <summary>
+		/// Trash can the player is in range to use.
+		/// </summary>
 		private ITrashCan currentTrashCan;
 		private IPlateBehaviour currentPlate;
 		private IPlayerMovement playerMovement;
 		private PlayerTask currentTask = PlayerTask.None;
+		/// <summary>
+		/// Current customer to whom this player is in range to serve.
+		/// </summary>
+		private INpcCustomer currentCustomer;
 
 		private void Awake()
 		{
@@ -37,20 +53,9 @@ namespace SaladChef
 			{
 				HandleAction1();
 			}
-			if (Input.GetKeyUp(inputBindings.Action2))
-			{
-				HandleAction2();
-			}
 		}
 
-		private void HandleAction2()
-		{
-			if (currentTask == PlayerTask.None)
-			{
-				PickupSalad();
-				currentTask = PlayerTask.Delivery;
-			}
-		}
+
 		private void HandleAction1()
 		{
 			if (currentTask == PlayerTask.None)
@@ -58,10 +63,12 @@ namespace SaladChef
 				GetOrPutOnPlate();
 				PickupVegetable();
 				ChopVegetable();
+				PickupSalad();
 			}
 			if (currentTask == PlayerTask.Delivery)
 			{
 				DisposeSalad();
+				Serve();
 			}
 		}
 
@@ -86,7 +93,7 @@ namespace SaladChef
 			{
 				return;
 			}
-			if (!gameObject.CompareTag(currentProcessor.usedBy))
+			if (currentProcessor.usedBy != null && !gameObject.CompareTag(currentProcessor.usedBy))
 			{
 				return;
 			}
@@ -95,7 +102,34 @@ namespace SaladChef
 			var salad = choppingAndMixingTable.PickupSalad();
 			playerInventory.AddItem(salad);
 			playerHUD.CarrySalad();
+			currentTask = PlayerTask.Delivery;
 			currentProcessor.usedBy = string.Empty;
+		}
+		private void Serve()
+		{
+			#region Checks
+			if (currentCustomer == null)
+			{
+				return;
+			}
+			if (currentTask != PlayerTask.Delivery)
+			{
+				return;
+			}
+			var salad = (ISalad)playerInventory.GetItem();
+			if (salad == null)
+			{
+				Debug.Log("Cannot server anything other than salad to customers right now...");
+				return;
+			}
+			#endregion
+
+			if (currentCustomer.Service(salad, gameObject.tag))
+			{
+				playerHUD.DropSalad();
+				playerInventory.RemoveItem();
+				currentTask = PlayerTask.None;
+			}
 		}
 		private void DisposeSalad()
 		{
@@ -146,7 +180,7 @@ namespace SaladChef
 				return false;
 			}
 			playerInventory.AddItem(veggie);
-			playerHUD.SetCarryItem(veggie.stateSpriteDictionary[veggie.currentState]);
+			playerHUD.SetCarryItem(veggie.stateSpriteDictionary[ProcessingState.RAW]);
 			return true;
 		}
 		private bool PutVegetableOnPlate()
@@ -210,7 +244,7 @@ namespace SaladChef
 				{
 					if (playerInventory.AddItem(pickedupVegetable))
 					{
-						playerHUD.SetCarryItem(pickedupVegetable.stateSpriteDictionary[pickedupVegetable.currentState]);
+						playerHUD.SetCarryItem(pickedupVegetable.stateSpriteDictionary[ProcessingState.RAW]);
 					}
 				}
 			}
@@ -239,6 +273,11 @@ namespace SaladChef
 			{
 				currentPlate = plate;
 			}
+			INpcCustomer npcCustomer = other.GetComponent<INpcCustomer>();
+			if (npcCustomer != null)
+			{
+				currentCustomer = npcCustomer;
+			}
 		}
 		private void OnTriggerExit2D(Collider2D other)
 		{
@@ -261,6 +300,11 @@ namespace SaladChef
 			if (currentPlate == plate)
 			{
 				currentPlate = null;
+			}
+			INpcCustomer npcCustomer = other.GetComponent<INpcCustomer>();
+			if (currentCustomer == npcCustomer)
+			{
+				currentCustomer = null;
 			}
 		}
 

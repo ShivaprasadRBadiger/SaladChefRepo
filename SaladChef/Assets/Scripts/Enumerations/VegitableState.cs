@@ -4,9 +4,10 @@ namespace SaladChef
 {
 	[Flags]
 	[Serializable]
+	//Sate of the vegetable, Ex: Raw,Chopped,Boiled,Steamed,Diced,Shredded,Fried etc.
 	public enum ProcessingState
 	{
-		RAW = 0,
-		CHOPPED = 1 << 0,
+		RAW = 1 << 0,
+		CHOPPED = 1 << 1,
 	}
 }

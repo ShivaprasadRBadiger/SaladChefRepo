@@ -5,5 +5,6 @@ namespace SaladChef
 	public interface ISalad : IItem
 	{
 		List<IVegetable> currentMix { get; set; }
+		bool IsSame(ISalad salad);
 	}
 }
