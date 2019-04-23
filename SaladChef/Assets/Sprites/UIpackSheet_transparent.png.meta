@@ -5,6 +5,20 @@ TextureImporter:
     21300000: FillBGLeft
     21300002: FillBGRight
     21300004: Blank1x1
+    21300006: ScoreBoardCenter
+    21300008: ScoreBoardLeft
+    21300010: ScoreboardRight
+    21300012: UIpackSheet_transparent_0
+    21300014: EndGamePanel
+    21300016: EndGamePanelEdge
+    21300018: EndGamePanelEdge2
+    21300020: UIpackSheet_transparent_1
+    21300022: UIpackSheet_transparent_2
+    21300024: UIpackSheet_transparent_3
+    21300026: ButtonRightCap
+    21300028: ButtonLeftCap
+    21300030: Resumebutton
+    21300032: backgroundEndGAME
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -98,26 +112,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FillBGLeft
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 432
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 83d48a90c4bab2b4bbbc49653707d1c8
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: FillBGRight
       rect:
         serializedVersion: 2
@@ -146,13 +140,293 @@ TextureImporter:
         width: 1
         height: 1
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 2bd59a12cb5fa114682416a7e7947a74
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ScoreBoardCenter
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 290
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 0, z: 7, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 342b1bbe4690b1b4082ca008aac50049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ScoreBoardLeft
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 290
+        width: 3
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20dbcd23c1055d94f81704a71ffc4c66
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ScoreboardRight
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 290
+        width: 3
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4207d98b250051b4fa334bb8c16192ff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_0
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 343
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 690661554d8c74f4499188037d836ba7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndGamePanel
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 325
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f6fd3bd8be82e74781dfa724eb787f6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndGamePanelEdge
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 324
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 9, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 567eef2034e85074abf4c8e60b6c3552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndGamePanelEdge2
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 306
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ea3c6b6eb3e14b4ab1a53fe944d18a3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_1
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 540
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de0a8ced68ed74a4cacddc227be18489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_2
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 540
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0414a139af229884592f88797cad3840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_3
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 540
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a1c58786cf9c1e47aeac9d2d50f08c9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButtonRightCap
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 558
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4f59846c1483e9409e6219b0f353d92
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ButtonLeftCap
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 558
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d87834c363ef46488f26a075a0c4829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Resumebutton
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 469
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87480f966b203df43a4482788b3dfce5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: backgroundEndGAME
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 487
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d11f13e88e78472469159577ac64a7e3
       vertices: []
       indices: 
       edges: []

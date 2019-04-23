@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SaladChef
 {
@@ -8,7 +9,7 @@ namespace SaladChef
 		float waitingTime { get; }
 		bool isAngry { get; }
 		Satisfaction satisfaction { get; }
-		string servicedBy { get; }
+		List<string> servicedBy { get; }
 		bool Service(ISalad salad, string serverID);
 	}
 }

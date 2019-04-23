@@ -2,6 +2,6 @@
 {
 	public interface ICustomerObserver : IObserver
 	{
-		void OnCustomerLeft(INpcCustomer satisfaction);
+		void OnCustomerLeft(INpcCustomer leavingNpcCustomer);
 	}
 }

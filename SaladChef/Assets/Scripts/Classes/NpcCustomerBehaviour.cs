@@ -34,8 +34,8 @@ namespace SaladChef
 
 		public int id => this.GetInstanceID();
 
-		private string _servicedBy = string.Empty;
-		public string servicedBy => _servicedBy;
+		private List<string> _servicedBy = new List<string>();
+		public List<string> servicedBy => _servicedBy;
 
 		private const string ERRMSG_WRONG_SUB = "Observer not supported!";
 		private const int MIN_VEGGIE_IN_SALAD = 2;
@@ -44,6 +44,9 @@ namespace SaladChef
 		VegetableFactory vegetableFactory;
 		SaladFactory saladFactory;
 		ISalad currentOrder;
+
+		const float SIMPLE_ORDER_WAIT_TIME = 60;
+		const float COMPLEX_ORDER_WAIT_TIME = 100;
 
 		int[] vegetableKeys;
 
@@ -59,9 +62,8 @@ namespace SaladChef
 		{
 			spriteRenderer.sprite = spriteContainer.GetRandomResource();
 			_satisfaction = Satisfaction.Excellent;
-			_waitingTime = Random.Range(80, 140);
-			waitTimer = _waitingTime;
-			_isAngry = Random.value < 0.2f ? true : false;
+			_servicedBy.Clear();
+			_isAngry = false;
 			OrderUp();
 			customerHUD.ShowProgress();
 			TickableManager.Instance.Subscribe(this);
@@ -70,17 +72,32 @@ namespace SaladChef
 		private void OrderUp()
 		{
 			ISalad orderSalad = saladFactory.GetSalad();
-			for (int i = 0; i < Random.Range(MIN_VEGGIE_IN_SALAD, MAX_VEGGIE_IN_SALAD); i++)
+			for (int i = 0; i < Random.Range(MIN_VEGGIE_IN_SALAD, MAX_VEGGIE_IN_SALAD + 1); i++)
 			{
 				orderSalad.currentMix.Add(GetRandomChopedVeggie());
 			}
 			currentOrder = orderSalad;
+			DecideWaitingTime();
 			customerHUD.UpdateOrderUI(orderSalad);
+		}
+
+		private void DecideWaitingTime()
+		{
+			if (currentOrder.currentMix.Count == 2)
+			{
+				_waitingTime = SIMPLE_ORDER_WAIT_TIME;
+				waitTimer = _waitingTime;
+			}
+			else if (currentOrder.currentMix.Count > 2)
+			{
+				_waitingTime = COMPLEX_ORDER_WAIT_TIME;
+				waitTimer = _waitingTime;
+			}
 		}
 
 		private IVegetable GetRandomChopedVeggie()
 		{
-			var veggie = (IVegetable)orderMenu[vegetableKeys[Random.Range(0, vegetableKeys.Length - 1)]].Clone();
+			var veggie = (IVegetable)orderMenu[vegetableKeys[Random.Range(0, vegetableKeys.Length)]].Clone();
 			veggie.currentState |= ProcessingState.CHOPPED; //Customers can ask for boiled/fried/diced in future extensions.
 			return veggie;
 		}
@@ -165,9 +182,10 @@ namespace SaladChef
 		/// <returns>If Salad being served is same as the one that is ordered.</returns>
 		public bool Service(ISalad salad, string chefID) //Can change this into abstract order to extend scope for other dishes.
 		{
+			_servicedBy.Add(chefID);
+
 			if (currentOrder.IsSame(salad))
 			{
-				_servicedBy = chefID;
 				customerHUD.HideProgress();
 				TickableManager.Instance.Unsubscribe(this);
 				gameObject.SetActive(false);
@@ -176,7 +194,8 @@ namespace SaladChef
 			}
 			else
 			{
-				Debug.Log("Wrong Order!:-( ...");
+				_isAngry = true;
+				Debug.Log("Wrong Order!Customer got angry at :" + chefID);
 				return false;
 			}
 		}

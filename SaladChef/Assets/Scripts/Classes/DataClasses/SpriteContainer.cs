@@ -44,7 +44,7 @@ public class SpriteContainer : ScriptableObject
 	{
 		if (sprites.Length > 0)
 		{
-			return sprites[Random.Range(0, sprites.Length - 1)];
+			return sprites[Random.Range(0, sprites.Length)];
 		}
 		else
 		{
