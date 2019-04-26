@@ -829,10 +829,6 @@ PrefabInstance:
       propertyPath: custFeedBackProviders.Array.data[6]
       value: 
       objectReference: {fileID: 644424625}
-    - target: {fileID: 866422550, guid: ad21e68538aa2f647a77e91bcc569dc8, type: 3}
-      propertyPath: m_Transition
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad21e68538aa2f647a77e91bcc569dc8, type: 3}
 --- !u!1001 &6109777484195614745

@@ -161,6 +161,7 @@ namespace SaladChef
 			if (customerObserver == null)
 			{
 				Debug.LogError(ERRMSG_WRONG_SUB);
+				return;
 			}
 			customerFeedbackListeners += customerObserver.OnCustomerLeft;
 		}
@@ -171,6 +172,7 @@ namespace SaladChef
 			if (customerObserver == null)
 			{
 				Debug.LogError(ERRMSG_WRONG_SUB);
+				return;
 			}
 			customerFeedbackListeners -= customerObserver.OnCustomerLeft;
 		}

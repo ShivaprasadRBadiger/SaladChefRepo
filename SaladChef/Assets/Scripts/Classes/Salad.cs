@@ -23,15 +23,9 @@ namespace SaladChef
 		{
 			if (currentMix.Count != salad.currentMix.Count)
 				return false;
-
 			for (int i = 0; i < salad.currentMix.Count; i++)
 			{
-				if (currentMix[i].id != salad.currentMix[i].id)
-				{
-					return false;
-
-				}
-				else if (currentMix[i].currentState != salad.currentMix[i].currentState)
+				if (salad.currentMix.Contains(currentMix[i]))
 				{
 					return false;
 				}

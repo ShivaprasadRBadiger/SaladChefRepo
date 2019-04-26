@@ -60,8 +60,8 @@ namespace SaladChef
 		{
 			if (currentTask == PlayerTask.None)
 			{
-				GetOrPutOnPlate();
 				PickupVegetable();
+				GetOrPutOnPlate();
 				ChopVegetable();
 				PickupSalad();
 			}
@@ -71,7 +71,6 @@ namespace SaladChef
 				Serve();
 			}
 		}
-
 
 		private void PickupSalad()
 		{
@@ -159,7 +158,10 @@ namespace SaladChef
 			#endregion
 			if (!GetVegetableFromPlate())
 			{
-				PutVegetableOnPlate();
+				if (playerInventory.Count() > 0)
+				{
+					PutVegetableOnPlate();
+				}
 			}
 			else
 			{
@@ -169,16 +171,17 @@ namespace SaladChef
 		}
 		private bool GetVegetableFromPlate()
 		{
+			if (playerInventory.Count() >= playerInventory.capacity)
+			{
+				return false;
+			}
 			var veggie = (IVegetable)currentPlate.GetItem();
 			if (veggie == null)
 			{
 				Debug.Log("Plate did not have vegetable.");
 				return false;
 			}
-			if (playerInventory.Count() >= playerInventory.capacity)
-			{
-				return false;
-			}
+
 			playerInventory.AddItem(veggie);
 			playerHUD.SetCarryItem(veggie.stateSpriteDictionary[ProcessingState.RAW]);
 			return true;
