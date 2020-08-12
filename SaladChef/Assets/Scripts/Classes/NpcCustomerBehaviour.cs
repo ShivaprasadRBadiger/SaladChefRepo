@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 namespace SaladChef
 {
 	[RequireComponent(typeof(SpriteRenderer))]
-	public class NpcCustomerBehaviour : MonoBehaviour, ITickable, INpcCustomer, ISubject
+	public class NpcCustomerBehaviour : MonoBehaviour, ITickable, INpcCustomer, IObservable
 	{
 		[SerializeField]
 		SpriteContainer spriteContainer;
@@ -19,7 +19,6 @@ namespace SaladChef
 		[SerializeField]
 		private CustomerHUD customerHUD;
 		Dictionary<int, IVegetable> orderMenu;
-
 
 		private float waitTimer;
 
@@ -37,10 +36,16 @@ namespace SaladChef
 		private List<string> _servicedBy = new List<string>();
 		public List<string> servicedBy => _servicedBy;
 
-		private const string ERRMSG_WRONG_SUB = "Observer not supported!";
+		private int _orderNumber = 1;
+		public int orderNumber => _orderNumber;
+
+		private const string ERRMSG_WRONG_OBSERVER = "Observer not supported!";
 		private const int MIN_VEGGIE_IN_SALAD = 2;
 		private const int MAX_VEGGIE_IN_SALAD = 3;
+
 		Action<INpcCustomer> customerFeedbackListeners;
+		Action<Satisfaction> customerSatisfactionChangedListeners;
+
 		VegetableFactory vegetableFactory;
 		SaladFactory saladFactory;
 		ISalad currentOrder;
@@ -48,7 +53,27 @@ namespace SaladChef
 		const float SIMPLE_ORDER_WAIT_TIME = 60;
 		const float COMPLEX_ORDER_WAIT_TIME = 100;
 
-		int[] vegetableKeys;
+		private int[] vegetableKeys;
+
+		private float _serviceQuality;
+		private float serviceQuality
+		{
+			get
+			{
+				return _serviceQuality;
+			}
+			set
+			{
+				if (_serviceQuality >= (int)satisfaction && value < (int)satisfaction)
+				{
+					customerSatisfactionChangedListeners?.Invoke(_satisfaction);
+					Debug.Log("Satisfaction changed to " + _satisfaction.ToString());
+					_satisfaction = (Satisfaction)((int)satisfaction - 25);
+				}
+				_serviceQuality = value;
+			}
+
+		}
 
 		private void Awake()
 		{
@@ -58,14 +83,20 @@ namespace SaladChef
 			orderMenu = vegetableFactory.GetCatalog();
 			vegetableKeys = orderMenu.Keys.ToArray();
 		}
-		private void OnEnable()
+
+		public void Initialize(int orderNumber)
 		{
-			spriteRenderer.sprite = spriteContainer.GetRandomResource();
+			this._orderNumber = orderNumber;
 			_satisfaction = Satisfaction.Excellent;
 			_servicedBy.Clear();
 			_isAngry = false;
+		}
+
+		private void OnEnable()
+		{
 			OrderUp();
 			customerHUD.ShowProgress();
+			spriteRenderer.sprite = spriteContainer.GetRandomResource();
 			TickableManager.Instance.Subscribe(this);
 		}
 
@@ -104,20 +135,8 @@ namespace SaladChef
 
 		private void OnDisable()
 		{
-			float serviceQuality = (waitTimer / waitingTime);
+			serviceQuality = (waitTimer / waitingTime) * 100;
 
-			if (serviceQuality <= 0)
-			{
-				_satisfaction = Satisfaction.Bad;
-			}
-			else if (serviceQuality < 0.7f)
-			{
-				_satisfaction = Satisfaction.Good;
-			}
-			else
-			{
-				_satisfaction = Satisfaction.Excellent;
-			}
 			currentOrder = null;
 			Notify();
 		}
@@ -146,7 +165,7 @@ namespace SaladChef
 		}
 		#endregion
 
-		#region ISubject Implementation
+		#region IObservable Implementation
 		public void Notify()
 		{
 			if (customerFeedbackListeners != null)
@@ -157,24 +176,30 @@ namespace SaladChef
 
 		public void Register(IObserver observer)
 		{
-			var customerObserver = (ICustomerObserver)observer;
-			if (customerObserver == null)
+			if (observer is ICustomerObserver)
 			{
-				Debug.LogError(ERRMSG_WRONG_SUB);
-				return;
+				var customerObserver = (ICustomerObserver)observer;
+				customerFeedbackListeners += customerObserver.OnCustomerLeft;
 			}
-			customerFeedbackListeners += customerObserver.OnCustomerLeft;
+			if (observer is ISatisfactionChangedObserver)
+			{
+				var satisfactionChangedObserver = (ISatisfactionChangedObserver)observer;
+				customerSatisfactionChangedListeners += satisfactionChangedObserver.OnSatisfactionChanged;
+			}
 		}
 
 		public void Unregister(IObserver observer)
 		{
-			var customerObserver = (ICustomerObserver)observer;
-			if (customerObserver == null)
+			if (observer is ICustomerObserver)
 			{
-				Debug.LogError(ERRMSG_WRONG_SUB);
-				return;
+				var customerObserver = observer as ICustomerObserver;
+				customerFeedbackListeners -= customerObserver.OnCustomerLeft;
 			}
-			customerFeedbackListeners -= customerObserver.OnCustomerLeft;
+			if (observer is ISatisfactionChangedObserver)
+			{
+				var satisfactionChangedObserver = observer as ISatisfactionChangedObserver;
+				customerSatisfactionChangedListeners -= satisfactionChangedObserver.OnSatisfactionChanged;
+			}
 		}
 		/// <summary>
 		/// Serves the order to customer , if right order is server customer accepts and leaves.

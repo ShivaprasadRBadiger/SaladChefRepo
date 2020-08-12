@@ -114,14 +114,19 @@ namespace SaladChef
 			}
 		}
 
+		public GameObject Player1 { get; private set; }
+		public GameObject Player2 { get; private set; }
 
 		private void Awake()
 		{
 			TickableManager.Instance.Subscribe(this);
+			Player1 = GameObject.FindGameObjectWithTag(GameTags.P1);
+			Player2 = GameObject.FindGameObjectWithTag(GameTags.P2);
+
 			var NpcCustomers = FindObjectsOfType<NpcCustomerBehaviour>();
 			for (int i = 0; i < custFeedBackProviders.Length; i++)
 			{
-				var feedbackInterface = (ISubject)custFeedBackProviders[i];
+				var feedbackInterface = (IObservable)custFeedBackProviders[i];
 				feedbackInterface.Register(this);
 			}
 			quitButton.onClick.AddListener(QuitGame);
@@ -150,9 +155,10 @@ namespace SaladChef
 			switch (leavingCustomer.satisfaction)
 			{
 				case Satisfaction.Excellent:
-					//Spawn Power
-					break;
-				case Satisfaction.Good:
+				//Spawn Power
+				case Satisfaction.VeryGood:
+				case Satisfaction.Mediocre:
+				case Satisfaction.Bad:
 					if (leavingCustomer.servicedBy.Contains(GameTags.P1))
 					{
 						p1Score += scoreOnService;
@@ -162,7 +168,7 @@ namespace SaladChef
 						p2Score += scoreOnService;
 					}
 					break;
-				case Satisfaction.Bad:
+				case Satisfaction.VeryBad:
 					if (!leavingCustomer.isAngry)
 					{
 						p1Score -= negativeScoreOnNoService;
@@ -192,15 +198,15 @@ namespace SaladChef
 				p1Time--;
 				p2Time--;
 
-				if (p1Time <= 0)
+				if (Player1.activeSelf && p1Time <= 0)
 				{
 					//End Game for P1
-					GameObject.FindGameObjectWithTag(GameTags.P1).SetActive(false);
+					Player1.SetActive(false);
 				}
-				if (p2Time <= 0)
+				if (Player2.activeSelf && p2Time <= 0)
 				{
 					//End Game for P2
-					GameObject.FindGameObjectWithTag(GameTags.P2).SetActive(false);
+					Player2.SetActive(false);
 				}
 
 				if (p1Time <= 0 && p2Time <= 0)

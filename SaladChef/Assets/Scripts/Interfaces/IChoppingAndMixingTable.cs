@@ -3,6 +3,6 @@
 	public interface IChoppingAndMixingTable
 	{
 		ISalad PickupSalad();
-		void MixSalad(IProcessable vegetable);
+		bool MixSalad(IProcessable vegetable);
 	}
 }

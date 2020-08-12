@@ -92,7 +92,7 @@ namespace SaladChef
 			{
 				return;
 			}
-			if (currentProcessor.usedBy != null && !gameObject.CompareTag(currentProcessor.usedBy))
+			if (string.IsNullOrEmpty(currentProcessor.usedBy) && !gameObject.CompareTag(currentProcessor.usedBy))
 			{
 				return;
 			}

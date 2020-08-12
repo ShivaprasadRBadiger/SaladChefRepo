@@ -27,19 +27,6 @@ namespace SaladChef
 		{
 			get { return ProcessingState.CHOPPED; }
 		}
-
-		public string usedBy { get; set; }
-		#endregion
-
-		private void Awake()
-		{
-			TickableManager.Instance.Subscribe(this);
-		}
-
-
-
-
-
 		public void Process(IProcessable veggie, ITaskHandler taskHandler)
 		{
 			if (!isProcessing)
@@ -58,6 +45,15 @@ namespace SaladChef
 			}
 		}
 
+		public string usedBy { get; set; }
+		#endregion
+
+		private void Awake()
+		{
+			TickableManager.Instance.Subscribe(this);
+		}
+
+		#region ITickable Implementation
 		public void Tick()
 		{
 			if (isProcessing)
@@ -66,10 +62,7 @@ namespace SaladChef
 				progress = taskTimeElapsed / taskCompletionTime;
 				if (progress >= 1)
 				{
-					currentlyProcessing.currentState |= stateModifier;
-					isProcessing = false;
-					currentTaskHandler.OnTaksEnded();
-					HandleEneProcessing();
+					HandleEndProcessing();
 				}
 				else
 				{
@@ -77,9 +70,13 @@ namespace SaladChef
 				}
 			}
 		}
+		#endregion
 
-		private void HandleEneProcessing()
+		private void HandleEndProcessing()
 		{
+			currentlyProcessing.currentState |= stateModifier;
+			isProcessing = false;
+			currentTaskHandler.OnTaksEnded();
 			MixSalad(currentlyProcessing);
 			currentlyProcessing = null;
 		}
@@ -92,7 +89,7 @@ namespace SaladChef
 			return finalSalad;
 		}
 
-		public void MixSalad(IProcessable processable)
+		public bool MixSalad(IProcessable processable)
 		{
 			var vegetable = (IVegetable)processable;
 			if (vegetable != null && vegetable.currentState.HasFlag(ProcessingState.CHOPPED))
@@ -103,11 +100,12 @@ namespace SaladChef
 					currentSalad = SaladFactory.GetInstance().GetSalad();
 				}
 				currentSalad.currentMix.Add(vegetable);
-
+				return true;
 			}
 			else
 			{
 				Debug.LogError("Only chopped vegetables can be mixed into salad");
+				return false;
 			}
 		}
 	}

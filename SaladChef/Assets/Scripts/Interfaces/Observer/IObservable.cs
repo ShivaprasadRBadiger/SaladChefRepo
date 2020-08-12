@@ -1,6 +1,6 @@
 ﻿namespace SaladChef
 {
-	public interface ISubject
+	public interface IObservable
 	{
 		void Register(IObserver observer);
 		void Unregister(IObserver observer);
